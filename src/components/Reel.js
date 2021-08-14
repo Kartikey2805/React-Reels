@@ -1,17 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { AuthContext } from '../contexts/AuthProvider';
-import { db } from './firebase';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import CommentIcon from '@material-ui/icons/Comment';
-import Collapse from '@material-ui/core/Collapse';
-import { makeStyles } from '@material-ui/core/styles';
-import Comments from './Comments';
+import React, { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../contexts/AuthProvider";
+import { db } from "./firebase";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import CommentIcon from "@material-ui/icons/Comment";
+
+import { makeStyles } from "@material-ui/core/styles";
+import Comments from "./Comments";
 
 const Reel = (props) => {
   const useStyles = makeStyles({
     collapse: {
-      maxHeight: '200px',
+      maxHeight: "200px",
     },
   });
   const classes = useStyles();
@@ -45,7 +45,7 @@ const Reel = (props) => {
         await db.posts.doc(props.obj.id).update({
           likes: [...props.obj.likes, user.uid],
         });
-        console.log('successfully updated');
+        console.log("successfully updated");
       } catch (err) {
         console.log(err);
       }
@@ -60,7 +60,7 @@ const Reel = (props) => {
         await db.posts.doc(props.obj.id).update({
           likes: newArr,
         });
-        console.log('successfully updated');
+        console.log("successfully updated");
       } catch (err) {
         console.log(err);
       }
@@ -69,7 +69,7 @@ const Reel = (props) => {
 
   function callback(entries) {
     entries.forEach((entry) => {
-      console.log('called');
+      console.log("called");
       let child = entry.target.firstElementChild;
       child.play().then(() => {
         if (entry.isIntersecting === false) {
@@ -87,11 +87,11 @@ const Reel = (props) => {
     };
 
     let observer = new IntersectionObserver(callback, conditionObj);
-    let allVideoElements = document.querySelectorAll('.video-element');
+    let allVideoElements = document.querySelectorAll(".video-element");
     allVideoElements.forEach((video) => {
       observer.observe(video);
     });
-     function loadChanges() {
+    function loadChanges() {
       let isLiked = props.obj.likes.includes(user.uid);
       if (isLiked === true) {
         setLike(true);
@@ -102,54 +102,55 @@ const Reel = (props) => {
       console.log(props.obj.comments);
     }
     loadChanges();
-    console.log('Reel useEffect ran');
+    console.log("Reel useEffect ran");
   }, []);
 
   return (
     <div>
       <div className="video-element">
-        <video id='myVideo' controls autoPlay={true} loop={true}>
-          <source src={props.obj.url} type='video/mp4'></source>
+        <video id="myVideo" controls autoPlay={true} loop={true}>
+          <source src={props.obj.url} type="video/mp4"></source>
         </video>
       </div>
 
-      <div style={{ textAlign: 'left' }}>
+      <div style={{ textAlign: "left" }}>
         <span>
-          {' '}
+          {" "}
           {like === false ? (
             <FavoriteBorderIcon onClick={(e) => setLikeHandler(e)} />
           ) : (
             <FavoriteIcon
-              style={{ fill: 'red' }}
+              style={{ fill: "red" }}
               onClick={(e) => setLikeHandler(e)}
             />
           )}
         </span>
-        <span style={{ marginLeft: '15px' }}>
+        <span style={{ marginLeft: "15px" }}>
           <CommentIcon onClick={openHandler} />
         </span>
         <div
           style={{
-            float: 'right',
-            fontSize: '75%',
-            display: 'inline-block',
-            right: '0',
-          }}>
+            float: "right",
+            fontSize: "75%",
+            display: "inline-block",
+            right: "0",
+          }}
+        >
           <i>
             <span>uploaded on: </span>
             <strong>{getDate(date)}</strong>
           </i>
         </div>
       </div>
-      <div style={{ textAlign: 'left' }}>
+      <div style={{ textAlign: "left" }}>
         <strong>
-          <span>{noOfLikes}</span>{' '}
+          <span>{noOfLikes}</span>{" "}
           {noOfLikes < 2 ? <span>like</span> : <span>likes</span>}
         </strong>
       </div>
       {open === true ? (
-        <div style={{ height: '150px' }}>
-          <h4 style={{ textAlign: 'left' }}>Comments section</h4>
+        <div style={{ height: "150px" }}>
+          <h4 style={{ textAlign: "left" }}>Comments section</h4>
 
           <Comments
             allComments={commentsArr}
@@ -169,18 +170,18 @@ function getDate(dateString) {
   let month = dateString.getMonth();
 
   let monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'June',
-    'July',
-    'Aug',
-    'Sept',
-    'Oct',
-    'Nov',
-    'Dec',
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   let year = dateString.getFullYear();
   // year = toString(year);

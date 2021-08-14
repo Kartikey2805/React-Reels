@@ -1,21 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../contexts/AuthProvider';
-import { db, storage } from './firebase';
-import uuid from 'react-uuid';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Reel from './Reel';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../contexts/AuthProvider";
+import { db, storage } from "./firebase";
+import uuid from "react-uuid";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Reel from "./Reel";
+import Button from "@material-ui/core/Button";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
 
 const Feed = () => {
   const value = useContext(AuthContext);
   const [data, setData] = useState(null);
-  const [change,setChange] = useState(false);
+  const [change, setChange] = useState(false);
   const [videos, setVideos] = useState(null);
   let user = value.user;
 
@@ -30,7 +30,7 @@ const Feed = () => {
       flexGrow: 1,
     },
     upload: {
-      marginRight: '5px',
+      marginRight: "5px",
     },
   }));
 
@@ -53,7 +53,7 @@ const Feed = () => {
     let getAllVideos = async () => {
       let arr = [];
       try {
-        let videoData = await db.posts.orderBy('createdAt', 'asc').get();
+        let videoData = await db.posts.orderBy("createdAt", "asc").get();
         videoData.docs.forEach((v) => {
           arr.push(v.data());
         });
@@ -92,64 +92,66 @@ const Feed = () => {
           };
           await db.posts.doc(pid).set(obj);
           let newPostIds = [...data.postIds, pid];
-          
+
           await db.users.doc(user.uid).update({
             postIds: newPostIds,
           });
           setChange(!change);
         }
       } catch (err) {
-        console.log('Some error occured');
+        console.log("Some error occured");
       }
     } else {
-      alert('First Select a File');
+      alert("First Select a File");
     }
   };
 
   return (
     <div>
       <div className={classes.root}>
-        <AppBar position='fixed'>
+        <AppBar position="fixed">
           <Toolbar>
-            
-            <Typography variant='h6' className={classes.title}>
-              Instagram Reels
+            <Typography variant="h6" className={classes.title}>
+              React Reels
             </Typography>
 
             <Button
-              variant='contained'
-              color='default'
-              size='small'
+              variant="contained"
+              color="default"
+              size="small"
               className={classes.upload}
-              component='label'
-              startIcon={<CloudUploadIcon />}>
+              component="label"
+              startIcon={<CloudUploadIcon />}
+            >
               Upload Reel
-              <input type='file' hidden onChange={(e) => uploadVideo(e)} />
+              <input type="file" hidden onChange={(e) => uploadVideo(e)} />
             </Button>
-            <div className='logout1'>
+            <div className="logout1">
               <Button
                 onClick={() => value.logout()}
                 startIcon={<ExitToAppIcon />}
-                size='small'
-                color='inherit'>
+                size="small"
+                color="inherit"
+              >
                 Logout
               </Button>
             </div>
-            <div className='logout2'>
+            <div className="logout2">
               <Button
-                className='logout2'
+                className="logout2"
                 onClick={() => value.logout()}
-                startIcon={<ExitToAppIcon />}></Button>
+                startIcon={<ExitToAppIcon />}
+              ></Button>
             </div>
           </Toolbar>
         </AppBar>
       </div>
 
-      <div className='feedContainer'>
+      <div className="feedContainer">
         {videos &&
           videos.map((obj, index) => {
             return (
-              <div style={{ margin: '10px 0' }} key={index}>
+              <div style={{ margin: "10px 0" }} key={index}>
                 <Reel userData={data} obj={obj} />
               </div>
             );
